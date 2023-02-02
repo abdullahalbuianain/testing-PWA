@@ -2,7 +2,7 @@ var webstore = new Vue({
     el: '#app',
     data: {
         sitename: 'Lesson Booking',
-        lessons: lesson,
+        lessons:[], //lesson,
         cart: [],
         order: {
             firstName: '',
@@ -10,6 +10,18 @@ var webstore = new Vue({
             total: 0
         },
         showlessons: true,
+    },
+
+    created: function() {
+        fetch("http://localhost:2500/collections/lessons").then(
+            function(response) {
+                response.json().then(
+                    function(json) {
+                        webstore.lessons = json;
+                    }
+                )
+            }
+        )
     },
 
 
@@ -29,6 +41,25 @@ var webstore = new Vue({
 
         
 methods: {
+
+         postOrderCollection(jsonData) {
+         fetch(`http://localhost:2500/orders`, {
+            method: "POST",
+            body: JSON.stringify(jsonData),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(response => response.json())
+            .then(responseData => {
+                console.log(responseData);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    },
+
+
+
         addToCart: function(lesson) {
             if(lesson.spaces > 0) {
                 lesson.spaces--;

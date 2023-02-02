@@ -5,5 +5,27 @@
     "mongodb": "^4.13.0",
     "node": "^19.4.0",
     "properties-reader": "^2.2.0"
-  }
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+    
+  },
+  "name": "cw-2",
+  "description": "Github Repository: https://github.com/abdullahalbuianain/abdulla--CW1",
+  "version": "1.0.0",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abdullahalbuianain/CW-2.git"
+  },
+  "author": "abdulla",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/abdullahalbuianain/CW-2/issues"
+  },
+  "homepage": "https://github.com/abdullahalbuianain/CW-2#readme"
 }
