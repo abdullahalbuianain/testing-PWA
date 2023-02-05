@@ -7,7 +7,6 @@ var webstore = new Vue({
         order: {
             firstName: '',
             number: '',
-            total: 0
         },
         showlessons: true,
     },
@@ -42,48 +41,64 @@ var webstore = new Vue({
         
 methods: {
 
-         postOrderCollection(jsonData) {
-         fetch(`http://localhost:2500/orders`, {
-            method: "POST",
-            body: JSON.stringify(jsonData),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }).then(response => response.json())
-            .then(responseData => {
-                console.log(responseData);
-            })
-            .catch(error => {
-                console.log(error);
-            });
-    },
-
 
 
         addToCart: function(lesson) {
             if(lesson.spaces > 0) {
                 lesson.spaces--;
                 this.cart.push(lesson);
-                this.order.total += parseFloat(lesson.price.slice(1));
             }
         },
+
         removeFromCart: function(lesson) {
             var index = this.cart.indexOf(lesson);
             this.cart.splice(index, 1);
-            this.order.total -= parseFloat(lesson.price.slice(1));
+            
         },
+
         showCheckout: function() {
             this.showlessons = !this.showlessons;
         },
-        submitForm: function() {
-            alert("Thank you " + this.order.firstName + " for your order of " + this.cart.length + " lessons! Your total is $" + this.order.total + ".");
-            this.order.firstName = '';
-            this.order.number = '';
-            this.cart = [];
-            this.order.total = 0;
-            this.showlessons = true;
-        },
-    
+
+         submitForm: function() {
+            let data = {
+              name: this.order.firstName,
+              phone: this.order.number,
+              lessons: this.cart.map(item => ({
+                id: item.id,
+                spaces: item.spaces
+              }))
+            };
+          
+            fetch("http://localhost:2500/collections/orders", {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(data)
+            })
+            .then(res => {
+              if (!res.ok) {
+                throw new Error('Failed to create order');
+              }
+              return res.json();
+            })
+            .then(() => {
+              alert("Thank you " + this.order.firstName + " for your order of " + this.cart.length + " lessons!");
+              this.order.firstName = '';
+              this.order.number = '';
+              this.cart = [];
+              this.showlessons = true;
+            })
+            .catch(err => {
+              console.error(err);
+              alert('Failed to create order. Please try again later.');
+            });
+          },
+          
+          
+          
+          
 
     sortLessons: function(location) {
         this.lessons.sort(function(a, b) {

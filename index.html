@@ -69,7 +69,7 @@
             </div>
 
           
-            <button @click='submitForm' v-if='order.firstName, order.number' class="checkoutButtonStyle">Submit Order</button>
+            <button @click='submitForm()' v-if='order.firstName, order.number' class="checkoutButtonStyle">Submit Order</button>
             <button disabled='disabled' v-else class="disabledButton">Please fill Name and Number !</button>
           
             <div class="lessonGrid">
