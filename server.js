@@ -23,7 +23,7 @@ let dbParams = properties.get("db.params");
 const uri = dbPprefix + dbUsername + ":" + dbPwd + dbUrl + dbParams;
 
 let db;
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const client = new MongoClient(uri, { useNewUrlParser: true,
 useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 client.connect(err => {
@@ -54,15 +54,6 @@ app.param("collectionName", function(req, res, next, collectionName) {
     return next();
   });
   
-  app.get("/collections/:collectionName", function(req, res, next) {
-    req.collection.find({},{sort: [["id", 1]]}).toArray(function(err, results) {
-      if (err) {
-        return next(err);
-      }
-      res.send(results);
-    });
-  });
-  
 
 app.get("/", function(req, res, next) {
     res.send("Select a collection, e.g., /collections/lessons");
@@ -88,6 +79,18 @@ app.post("/collections/:collectionName", function(req, res, next) {
       res.send(results);
       });
     });
+
+
+app.put("/collections/:collectionName/:id", function(req, res, next) {
+    req.collection.uodateOne({_id: new ObjectId(req.params.spaces)}),
+    {$set: req.body},
+    {safe: true, multi: false}, function(err, results) {
+        if (err) {
+            return next(err);
+        } 
+        res.send(results)
+    }
+});
   
   
 

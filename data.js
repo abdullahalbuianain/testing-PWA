@@ -96,7 +96,22 @@ methods: {
             });
           },
           
-          
+           updateLesson() {
+
+            fetch(`http://localhost:2500/collections/lessons`, {
+                method: "PUT",
+                body: JSON.stringify(data),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then(response => response.json())
+                .then(responseData => {
+                    console.log(responseData);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }, 
           
           
 
@@ -140,17 +155,17 @@ methods: {
         });
     },
 
-    sortLessons: function(sortType) {
-    if (sortType === 'price') {
+    sortLessons: function(price) {
+    if (price === 'price') {
         this.lessons.sort(function(a, b) {
-            let propA = parseFloat(a[sortType].slice(1));
-            let propB = parseFloat(b[sortType].slice(1));
+            let propA = parseFloat(a[price].slice(1));
+            let propB = parseFloat(b[price].slice(1));
             return propA - propB;
         });
     } else {
         this.lessons.sort(function(a, b) {
-            let propA = a[sortType].toLowerCase();
-            let propB = b[sortType].toLowerCase();
+            let propA = a[price].toLowerCase();
+            let propB = b[price].toLowerCase();
             if (propA < propB) {
                 return -1;
             } else if (propA > propB) {
