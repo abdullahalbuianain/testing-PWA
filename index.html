@@ -5,16 +5,23 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
-    <!--script src='lessons.js'></script-->
+    <script src='lessons.js'></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link rel="stylesheet" href="assets/style.css">
 
-    <title>Document</title>
+    <link rel="manifest" href="lessonBooking.webmanifest">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    
+
+    <title>lesson Booking</title>
 </head>
 <body>
     <div id="app">
         <header>
-            <h1 v-text='sitename'></h1>
+            <h1 v-text='sitename' class="header"></h1>
           
             <button disabled='disabled' v-if='this.cart < [0]' class="disabledButton"><span class='fas fa-shopping-cart'></span>Checkout</button>
             <button @click='showCheckout' v-else  class="addButtonStyle">{{this.cart.length}}<span class='fas fa-shopping-cart'></span>Checkout</button>
@@ -28,13 +35,13 @@
 
         </header>
         <div v-if="showlessons" class="lessonGrid">
-        <div v-for="(lesson, index) in lessons" :key="lesson.id" >
+        <div v-for="(lesson, index) in lessons" :key="lesson.id"  class="lessonCard"  >
 
             <figure>
                 <p><img v-bind:src="lesson.image"></p>
             </figure>
 
-            <div class="lessonAlign">
+            <div class="lessonTitle">
             <h3>Subject: {{lesson.subject}}</h3>
             <p>Location: {{lesson.location}}</p>
             <p>Spaces available: {{lesson.spaces}}</p>
@@ -56,7 +63,7 @@
 
         <div v-else="showlessons">
             <div class="formStyle">
-            <h2>Checkout</h2>
+            <h2 class="header">Checkout</h2>
             <p><strong>Name : </strong></p>
             <input v-model.trim="order.firstName" type="text"/>
 
@@ -73,13 +80,13 @@
             <button disabled='disabled' v-else class="disabledButton">Please fill Name and Number !</button>
           
             <div class="lessonGrid">
-            <div v-for="lesson in cart">
+            <div v-for="lesson in cart" class="lessonCard">
                 
                 <figure>
                 <img v-bind:src="lesson.image"></p>
                 </figure> 
 
-                <div class="lessonAlign">
+                <div class="lessonTitle" >
                 <h3>Subject: {{lesson.subject}}</h3>
                 <p>Location: {{lesson.location}}</p>
                 <p>Spaces available: {{lesson.spaces}}</p>

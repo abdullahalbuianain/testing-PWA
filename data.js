@@ -1,8 +1,10 @@
+
+
 var webstore = new Vue({
     el: '#app',
     data: {
         sitename: 'Lesson Booking',
-        lessons:[], //lesson,
+        lessons: lesson,
         cart: [],
         order: {
             firstName: '',
@@ -12,7 +14,12 @@ var webstore = new Vue({
     },
 
     created: function() {
-        fetch("http://localhost:2500/collections/lessons").then(
+
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.register("service-workerData.js");
+        }
+
+    /*     fetch("http://localhost:2500/collections/lessons").then(
             function(response) {
                 response.json().then(
                     function(json) {
@@ -20,7 +27,7 @@ var webstore = new Vue({
                     }
                 )
             }
-        )
+        ) */
     },
 
 
@@ -96,22 +103,23 @@ methods: {
             });
           },
           
-           updateLesson() {
-
+          updateLesson(data) {
             fetch(`http://localhost:2500/collections/lessons`, {
                 method: "PUT",
                 body: JSON.stringify(data),
                 headers: {
                     "Content-Type": "application/json"
                 }
-            }).then(response => response.json())
-                .then(responseData => {
-                    console.log(responseData);
-                })
-                .catch(error => {
-                    console.log(error);
-                });
-        }, 
+            })
+            .then(response => response.json())
+            .then(responseData => {
+                console.log(responseData);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        },
+        
           
           
 
